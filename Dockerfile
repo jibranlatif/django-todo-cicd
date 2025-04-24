@@ -10,11 +10,8 @@ RUN dnf install -y \
     rpm \
     python3-libselinux \
     python3-libsemanage \
-    setools-console \
-    dbus-python \
-    python3-gnupg \
-    systemd-python \
     && dnf clean all
+
 
 # Switch back to non-root user (if required)
 USER 1001
