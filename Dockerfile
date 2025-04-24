@@ -1,6 +1,8 @@
 FROM registry.access.redhat.com/ubi9/python-311
 
-# Install system packages required by your Python modules
+# Become root to install system packages
+USER root
+
 RUN dnf install -y \
     gcc \
     python3-devel \
@@ -14,15 +16,14 @@ RUN dnf install -y \
     systemd-python \
     && dnf clean all
 
-# Set working directory
+# Switch back to non-root user (if required)
+USER 1001
+
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy your application code
 COPY . .
 
-# Start the application (adjust if needed)
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
